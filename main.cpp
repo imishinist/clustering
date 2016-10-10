@@ -26,9 +26,12 @@ ostream& operator<<(ostream& o, const vector<T>& p) {
 	return o;
 }
 
+string labels[] = {"ncut", "mcut", "kmeans"};
+int n;
+
 template<typename T>
-void print(int k, vector<int> tgv, const vector<pair<T, T>>& a) {
-	ofstream of("tmp/kmeans.dat");
+void print(string file, int k, vector<int> tgv, const vector<pair<T, T>>& a) {
+	ofstream of(file + "_" + labels[n - 1] + ".dat");
 	vector<vector<int>> idx(k);
 	for (int i = 0; i < tgv.size(); i++) {
 		idx[tgv[i]].push_back(i);
@@ -53,7 +56,7 @@ void print(int k, vector<int> tgv, const vector<pair<T, T>>& a) {
 }
 
 int main(int argc, char *argv[]) {
-	int n, k;
+	int k;
 	double sigma2 = 1;
 	string file;
 
@@ -82,8 +85,8 @@ int main(int argc, char *argv[]) {
 	cut f[] = {ncut, mcut, just_k_means};
 
 	auto ret = f[n - 1](a, k, sigma2 * 2);
-	print(k, ret, a);
-	string command = "./bin/plot tmp/kmeans";
+	print(file, k, ret, a);
+	string command = "./bin/plot " + file + "_" + labels[n - 1];
 	system(command.c_str());
 	return 0;
 }
