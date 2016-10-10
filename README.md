@@ -1,0 +1,5 @@
+plotは引数で渡されたdatファイルをgnuplotで描画  
+
+genは座標データを正規分布もしくは二次関数で生成
+
+現在ncutとmcutとkmeansを実装済み
