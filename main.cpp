@@ -10,6 +10,10 @@
 #include "spectral.hpp"
 using namespace std;
 
+namespace clustering {
+    double none = -1.0;
+}
+
 typedef std::function<std::vector<int>(const std::vector<point>&, int, double)> cut;
 
 template<typename T>
@@ -26,33 +30,41 @@ ostream& operator<<(ostream& o, const vector<T>& p) {
 	return o;
 }
 
+template<typename T>
+ostream& operator<<(ostream& o, const vector<vector<pair<T,T>>>& k_points) {
+    int mx = 0;
+    pair<T, T> none_p = make_pair(clustering::none, clustering::none);
+    for (auto& points : k_points) {
+        if (mx < points.size()) {
+            mx = points.size();
+        }
+    }
+    for (int i = 0; i < mx; i++) {
+        for (auto& points : k_points) {
+            if (i < points.size()) {
+                o << points[i];
+            } else {
+                o << none_p;
+            }
+        }
+        o << endl;
+    }
+    return o;
+}
+
 string labels[] = {"ncut", "mcut", "kmeans"};
 int n;
 
 template<typename T>
-void print(string file, int k, vector<int> tgv, const vector<pair<T, T>>& a) {
+void print(string file, int k, vector<int>& tgv, const vector<pair<T, T>>& a) {
 	ofstream of(file + "_" + labels[n - 1] + ".dat");
-	vector<vector<int>> idx(k);
-	for (int i = 0; i < tgv.size(); i++) {
-		idx[tgv[i]].push_back(i);
-	}
-	int mx = 0;
-	for (int i = 0; i < idx.size(); i++) {
-		if (mx < idx[i].size()) {
-			mx = idx[i].size();
-		}
-	}
-	for (int i = 0; i < mx; i++) {
-		for (int j = 0; j < k; j++) {
-			if (i < idx[j].size()) {
-				int index = idx[j][i];
-				of << a[index];
-			} else {
-				of << make_pair<double, double>(0.0, 0.0);
-			}
-		}
-		of << endl;
-	}
+
+    vector<vector<pair<T, T>>> k_points(k);
+    for (int i = 0; i < a.size(); i++) {
+        k_points[tgv[i]].push_back(a[i]);
+    }
+
+    of << k_points;
 }
 
 int main(int argc, char *argv[]) {
