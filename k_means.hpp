@@ -1,8 +1,8 @@
 #include <vector>
-#include <iostream>
 #include <random>
 #include <cmath>
 #include <chrono>
+#include "stream.cpp"
 
 #define double_inf (std::numeric_limits<double>::infinity())
 

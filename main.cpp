@@ -10,47 +10,7 @@
 #include "spectral.hpp"
 using namespace std;
 
-namespace clustering {
-    double none = -1.0;
-}
-
 typedef std::function<std::vector<int>(const std::vector<point>&, int, double)> cut;
-
-template<typename T>
-ostream& operator<<(ostream& o, const pair<T, T>& p) {
-	o << showpoint << p.first << " " << p.second << " ";
-	return o;
-}
-
-template<typename T>
-ostream& operator<<(ostream& o, const vector<T>& p) {
-	for (int i = 0; i < p.size(); i++) {
-		o << showpoint << p[i] << " ";
-	}
-	return o;
-}
-
-template<typename T>
-ostream& operator<<(ostream& o, const vector<vector<pair<T,T>>>& k_points) {
-    int mx = 0;
-    pair<T, T> none_p = make_pair(clustering::none, clustering::none);
-    for (auto& points : k_points) {
-        if (mx < points.size()) {
-            mx = points.size();
-        }
-    }
-    for (int i = 0; i < mx; i++) {
-        for (auto& points : k_points) {
-            if (i < points.size()) {
-                o << points[i];
-            } else {
-                o << none_p;
-            }
-        }
-        o << endl;
-    }
-    return o;
-}
 
 string labels[] = {"ncut", "mcut", "kmeans"};
 int n;
